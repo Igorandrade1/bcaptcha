@@ -8,7 +8,7 @@ methods = [
     cv2.THRESH_TOZERO_INV,
 ]
 
-img = cv2.imread("bdcaptcha/telanova11.png")
+img = cv2.imread("img_para_pegar_cor.png")
 
 
 # transformar a imagem em escala de cinza
