@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from os import path, makedirs
-from treat_captcha import paint_the_selected_areas_in_the_image
+
 MIN_CONTOUR_AREA = 300
 MAX_CONTOUR_AREA = 2400
 MAX_HORIZONTAL_LIMIT = 150
@@ -40,17 +40,12 @@ for i, contour in enumerate(Contours):
                 letter_regions.append([X, Y, W, H])
                 cv2.rectangle(contour_img, (X, Y), (X + W, Y + H), (0, 255, 0), 2)
 
+
 # Carregar a segunda imagem
 img2 = cv2.imread("bdcaptcha/img_captcha_6.png")
 
-# Criar uma nova imagem com fundo branco
-result_img = np.ones_like(img2) * 0
 
-# Create the 'letter_extracts' folder if it doesn't exist
-output_folder = path.join(path.dirname(__file__), 'letter_extracts')
-makedirs(output_folder, exist_ok=True)
 
-contour_img = img2.copy()
 
 # Criar uma máscara inicial preenchida com zeros
 mask = np.zeros_like(img2, dtype=np.uint8)
@@ -115,7 +110,7 @@ for region in letter_regions:
 # cv2.destroyAllWindows()
 
 
-img_filtered = cv2.bilateralFilter(result_img_with_treatment_gray_img, 9, 75, 75)
+
 
 
 # Aplicar limiar adaptativo
@@ -155,7 +150,6 @@ img_smoothed = cv2.dilate(img_filled, kernel_dilation, iterations=1)
 cv2.imshow('ori', img_ori)
 cv2.imshow('Imagem com Inversão de Cores e Preenchimento de Falhas', img_filled)
 cv2.imshow('Imagem Original', result_img_with_treatment_gray_img)
-cv2.imshow('Imagem Filtrada Bilateralmente', img_filtered)
 cv2.imshow('Imagem com Limiar Adaptativo', img_adaptive_thresh)
 cv2.imshow('Imagem Suavizada com Dilatação', img_smoothed)
 cv2.waitKey(0)
