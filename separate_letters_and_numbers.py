@@ -3,9 +3,9 @@ from os import path
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
-# files = glob.glob('treat_imgs/*')
 
-files = glob.glob('img_for_testing/*')
+
+files = glob.glob('treat_imgs_v2/*')
 
 MIN_CONTOUR_AREA = 300
 MAX_CONTOUR_AREA = 2400
@@ -34,7 +34,7 @@ for file in files:
     contours, hierarchy = cv2.findContours(img_removed_lines, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     letter_regions = []
-
+    image_to_capture_the_letters = gray.copy()
     # Filtrar contornos por letras
     for i, contour in enumerate(contours):
         area = cv2.contourArea(contour)
@@ -63,8 +63,10 @@ for file in files:
     for i, rectangle in enumerate(letter_regions):
         x, y, l, a = rectangle
 
-        img_letter = gray[y - 2:y + a + 2, x - 2:x + l + 2]
-
+        img_letter = image_to_capture_the_letters[y - 2:y + a + 10, x - 2:x + l + 2]
+        # cv2.imshow("img_ltter", img_letter)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         file_name = path.basename(file).replace(".png", f"letter{i}")
         i += 1
         try:

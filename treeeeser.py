@@ -6,8 +6,8 @@ MIN_CONTOUR_AREA = 300
 MAX_CONTOUR_AREA = 2400
 MAX_HORIZONTAL_LIMIT = 150
 MIN_HORIZONTAL_LIMIT = 30
-img_ori = cv2.imread("bdcaptcha/img_captcha_6.png")
-img = cv2.imread("treat_imgs/img_captcha_6.png")
+img_ori = cv2.imread("bdcaptcha/img_captcha_0.png")
+img = cv2.imread("treat_imgs/img_captcha_0.png")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred = cv2.blur(gray, (5, 5), 0)
 img_thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
@@ -41,6 +41,10 @@ for i, contour in enumerate(Contours):
                 cv2.rectangle(contour_img, (X, Y), (X + W, Y + H), (0, 255, 0), 2)
 
 
+
+cv2.imshow('contour_img', contour_img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 # Carregar a segunda imagem
 img2 = cv2.imread("bdcaptcha/img_captcha_6.png")
 

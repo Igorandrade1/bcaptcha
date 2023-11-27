@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
-from os import path, makedirs, listdir
-from typing import Tuple, List, Any
+from os import path, listdir
+from typing import Any
 
 
 class ImageProcessor:
@@ -23,11 +23,10 @@ class ImageProcessor:
 
         )
 
-        self.current_treat_image = cv2.imread(self.full_folder_treat_image)
-        self.img = self.current_treat_image.copy()
         self.letter_regions = []
 
     def process_file(self):
+
         for file in listdir(self.full_folder_treat_image):
             file_name = path.basename(file)
             full_path_file_current_treat_image = path.join(self.full_folder_treat_image, file_name)
@@ -120,8 +119,12 @@ class ImageProcessor:
 
                 kernel_dilation = np.ones((3, 3), np.uint8)
                 original_image_with_smoothed = cv2.dilate(original_image_with_filled, kernel_dilation, iterations=1)
+                full_path_to_save_final_file = path.join(
+                    self.full_folder_to_save_the_processed_images,
+                    path.basename(file)
+                )
 
-                cv2.imwrite(self.full_folder_to_save_the_processed_images, original_image_with_smoothed)
+                cv2.imwrite(full_path_to_save_final_file, original_image_with_smoothed)
 
     @staticmethod
     def preprocess_image(img: np.ndarray) -> np.ndarray:
@@ -188,40 +191,15 @@ class ImageProcessor:
 
         return letter_regions
 
-    def extract_letter_regions(self):
-
-        # Implement logic to extract letter regions
-        # ...
-        ...
-
-    def create_result_image(self):
-        # Implement logic to create the result image
-        ...
-
-    def apply_post_processing(self):
-        # Implement post-processing steps here
-        ...
-
-    def show_result(self):
-        # Implement logic to display the result
-        ...
-
-    def save_result(self, output_path):
-        cv2.imwrite(output_path, self.result_img)
-        ...
-
 
 if __name__ == "__main__":
-    input_image_path = "treat_imgs/img_captcha_6.png"
-    output_folder = "img_for_testing/"
-    output_path = path.join(output_folder, "img_for_test.png")
+    treat_img_folder_name = "treat_imgs"
+    original_image_folder_name = "bdcaptcha"
 
-    processor = ImageProcessor(input_image_path)
+    processor = ImageProcessor(
+        treat_image_folder_name=treat_img_folder_name,
+        original_image_folder_name=original_image_folder_name
+    )
 
-    processor.preprocess_image()
-    processor.find_contours()
-    processor.extract_letter_regions()
-    processor.create_result_image()
-    processor.apply_post_processing()
-    processor.show_result()
-    processor.save_result(output_path)
+    processor.process_file()
+
