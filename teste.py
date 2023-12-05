@@ -5,7 +5,7 @@ MIN_CONTOUR_AREA = 300
 MAX_CONTOUR_AREA = 2400
 MAX_HORIZONTAL_LIMIT = 150
 MIN_HORIZONTAL_LIMIT = 30
-img = cv2.imread("img_for_testing/img_for_test.png")
+img = cv2.imread("img_for_testing/img_captcha_4592.png")
 # img = cv2.imread("treat_imgs/img_captcha_0.png")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred = cv2.blur(gray, (5, 5), 0)
@@ -38,7 +38,16 @@ for i, contour in enumerate(Contours):
             if Hierarchy[0][i][3] == -1:
                 letter_regions.append([X, Y, W, H])
                 cv2.rectangle(contour_img, (X, Y), (X + W, Y + H), (0, 255, 0), 2)
+for i, rectangle in enumerate(letter_regions):
+    x, y, l, a = rectangle
 
+    img_letter = img[y - 2:y + a + 10, x - 2:x + l + 2]
+    #cv2.imshow('Contornos', img_letter)
+    #cv2.waitKey(0)
+    #cv2.imwrite('img_captcha_4577_letter1.png',img_letter)
+
+    #cv2.destroyAllWindows()
+    print()
 cv2.imshow('Contornos', contour_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

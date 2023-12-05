@@ -24,8 +24,9 @@ class ImageProcessor:
         )
 
         self.letter_regions = []
+        self.full_path_to_save_final_file = ''
 
-    def process_file(self):
+    def process_file(self, full_path_to_save_final_file=''):
 
         for file in listdir(self.full_folder_treat_image):
             file_name = path.basename(file)
@@ -119,12 +120,17 @@ class ImageProcessor:
 
                 kernel_dilation = np.ones((3, 3), np.uint8)
                 original_image_with_smoothed = cv2.dilate(original_image_with_filled, kernel_dilation, iterations=1)
-                full_path_to_save_final_file = path.join(
-                    self.full_folder_to_save_the_processed_images,
-                    path.basename(file)
-                )
 
-                cv2.imwrite(full_path_to_save_final_file, original_image_with_smoothed)
+                if full_path_to_save_final_file:
+                    cv2.imwrite(
+                        path.join(full_path_to_save_final_file, path.basename(file)), original_image_with_smoothed
+                    )
+                else:
+
+                    cv2.imwrite(
+                        path.join(self.full_folder_to_save_the_processed_images, path.basename(file)),
+                        original_image_with_smoothed
+                    )
 
     @staticmethod
     def preprocess_image(img: np.ndarray) -> np.ndarray:
