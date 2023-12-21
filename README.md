@@ -11,11 +11,12 @@ and more all libs which use on development
 
 solution - Step-by-Step 
 
-
-1 - get many versions of the captcha image
-2 - remove all image noises
-3 - separate images in letters
-4 - Categorize letters for the training IA
-5 - Intelligent manual adjustment
-6 - train the IA
-7 - Use ia to broken the captcha
+<ol>
+  <li>get many versions of the captcha image</li>
+  <li>remove all image noises</li>
+  <li>separate images in letters</li>
+  <li>Categorize letters for the training IA</li>
+  <li>Intelligent manual adjustment</li>
+  <li>train the IA</li>
+  <li>Use ia to broken the captcha</li>
+</ol>
