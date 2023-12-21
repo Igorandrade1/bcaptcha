@@ -8,7 +8,7 @@ from treat_captcha_v1 import treat_img
 from treat_captcha_v2 import ImageProcessor
 from os import path
 
-path.join(path.dirname(__file__), "solve")
+
 
 
 folder_treat_img_v1_and_final_img = path.join(path.dirname(__file__), "solve")
@@ -82,11 +82,11 @@ def broken_captcha():
             cv2.rectangle(img, (x, y), (x + l, y + a), (0, 255, 0), 2)
 
             # Desenhe retângulos ao redor dos contornos encontrados
-        img_with_contours = img.copy()
 
-        final_img = cv2.merge([img_thresh] * 3)
         forecast = []
         i = 0
+        ALTO_UMA_LETRA = 35  # Ajuste conforme necessário
+
         for i, rectangle in enumerate(letter_regions):
             x, y, l, a = rectangle
 
@@ -98,18 +98,23 @@ def broken_captcha():
 
             # tratamento para o keras funcionar (img com 4 dimensoes)
             img_letter = np.expand_dims(img_letter, axis=2)
-
             img_letter = np.expand_dims(img_letter, axis=0)
 
             letter_forecast = model.predict(img_letter)
             letter_forecast = lb.inverse_transform(letter_forecast)[0]
+
+            # Inferir o caso da letra com base na altura do contorno
+            if a < ALTO_UMA_LETRA:
+                # Se a altura for menor que um determinado limite, assumimos que é minúscula
+                letter_forecast = letter_forecast.lower()
+
             forecast.append(letter_forecast)
 
             # desenhar letra prevista na imagem final
         forecast_text = "".join(forecast)
 
         print(forecast_text)
-        # return forecast_text
+        return forecast_text
 
 
 if __name__ == "__main__":
